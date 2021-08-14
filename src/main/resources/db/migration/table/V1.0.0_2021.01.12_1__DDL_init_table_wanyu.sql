@@ -13,10 +13,11 @@ CREATE TABLE IF NOT EXISTS public."department"
     code           varchar NOT NULL,               -- 唯一code
     name           varchar NOT NULL,               -- 显示名
 
+    fullName       varchar,                        -- 部门全称
     parent_code    varchar NOT NULL default 0,     -- 父级部门code:0顶级部门
     location       varchar,                        -- 部门位置
     hierarchy      int2    NOT NULL,               -- 部门层级
-    sort           varchar NOT NULL,               -- 同层级显示顺序
+    sort           int2    NOT NULL,               -- 同层级显示顺序
 
     origin_type    int2    NOT NULL default 0,     -- 数据来源
     info_level     int2    NOT NULL default 50,    -- 信息级别
@@ -46,7 +47,7 @@ CREATE SEQUENCE IF NOT EXISTS public.department_id_seq
 alter table public.department
     alter column id set default nextval('department_id_seq');
 CREATE UNIQUE INDEX IF NOT EXISTS department_code_uindex ON public."department" USING btree ("code");
-CREATE UNIQUE INDEX IF NOT EXISTS department_name_uindex ON public."department" USING btree ("parent_code","name","flag");
+CREATE UNIQUE INDEX IF NOT EXISTS department_name_uindex ON public."department" USING btree ("parent_code", "name", "flag");
 
 
 -- 注释

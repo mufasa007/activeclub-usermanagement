@@ -1,6 +1,8 @@
-package com.activeclub.core.usermanagement.bean.model;
+package com.activeclub.core.ac_usermanagement.bean.model;
 
 import com.activeclub.core.bean.BaseModel;
+
+import java.io.Serializable;
 
 /**
  * @Author 59456
@@ -8,22 +10,13 @@ import com.activeclub.core.bean.BaseModel;
  * @Descrip
  * @Version 1.0
  */
-public class User extends BaseModel{
-
-    /**
-     * 唯一键
-     */
-    private String accountName;
+public class User extends BaseModel implements Serializable {
+    private static final long serialVersionUID = 7400006197800489372L;
 
     /**
      * 登录密码密文
      */
     private String password;
-
-    /**
-     * 可重复(显示名)
-     */
-    private String userName;
 
     /**
      * 非必填，存在默认值
@@ -36,6 +29,7 @@ public class User extends BaseModel{
     private String identityNumber;
 
 
+
     public String getPassword() {
         return password;
     }
@@ -44,21 +38,6 @@ public class User extends BaseModel{
         this.password = password;
     }
 
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;

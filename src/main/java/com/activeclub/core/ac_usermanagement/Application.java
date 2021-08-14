@@ -1,4 +1,4 @@
-package com.activeclub.core.usermanagement;
+package com.activeclub.core.ac_usermanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

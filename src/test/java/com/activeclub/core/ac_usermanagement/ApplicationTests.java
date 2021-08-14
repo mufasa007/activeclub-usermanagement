@@ -1,4 +1,4 @@
-package com.activeclub.core.usermanagement;
+package com.activeclub.core.ac_usermanagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

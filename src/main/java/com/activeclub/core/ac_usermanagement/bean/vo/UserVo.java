@@ -1,6 +1,6 @@
-package com.activeclub.core.usermanagement.bean.vo;
+package com.activeclub.core.ac_usermanagement.bean.vo;
 
-import com.activeclub.core.usermanagement.bean.model.User;
+import com.activeclub.core.ac_usermanagement.bean.model.User;
 
 import java.io.Serializable;
 

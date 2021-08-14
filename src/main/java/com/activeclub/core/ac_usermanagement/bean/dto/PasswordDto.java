@@ -1,4 +1,4 @@
-package com.activeclub.core.usermanagement.bean.dto;
+package com.activeclub.core.ac_usermanagement.bean.dto;
 
 import java.io.Serializable;
 

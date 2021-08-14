@@ -1,10 +1,9 @@
-package com.activeclub.core.usermanagement.web.service;
+package com.activeclub.core.ac_usermanagement.web.service;
 
 import com.activeclub.core.bean.Page;
-import com.activeclub.core.usermanagement.bean.dto.PasswordDto;
-import com.activeclub.core.usermanagement.bean.dto.UserDto;
-import com.activeclub.core.usermanagement.bean.vo.UserVo;
-import org.springframework.stereotype.Service;
+import com.activeclub.core.ac_usermanagement.bean.dto.PasswordDto;
+import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
+import com.activeclub.core.ac_usermanagement.bean.vo.UserVo;
 
 import java.util.List;
 
