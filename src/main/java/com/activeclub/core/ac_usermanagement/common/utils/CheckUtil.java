@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckUtil {
 
-    @Autowired
-    private EncrytUtil encrytUtil;
+//    @Autowired
+//    private EncrytUtil encrytUtil;
 
     public void userInsert(UserDto userDto) throws BaseException {
         if(NullUtil.strIsNull(userDto.getPassword())){
@@ -26,8 +26,9 @@ public class CheckUtil {
                     String.format("Password %s",ErrorCode.PARAM_NULL.msg));
         }
 
+        EncrytUtil encrytUtil= new EncrytUtil();
         try{
-            String ciper = encrytUtil.Decode(userDto.getPassword());
+            String ciper = encrytUtil.Decode(userDto.getPassword(),"","");
         }catch (Exception e){
             throw new BaseException(ErrorCode.PARAM_DECODE.code,
                     String.format("Password %s",ErrorCode.PARAM_DECODE.msg));
