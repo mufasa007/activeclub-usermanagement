@@ -1,5 +1,6 @@
 package com.activeclub.core.ac_usermanagement.web.service;
 
+import com.activeclub.core.ac_usermanagement.bean.model.User;
 import com.activeclub.core.bean.Page;
 import com.activeclub.core.ac_usermanagement.bean.dto.PasswordDto;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
@@ -15,9 +16,14 @@ import java.util.List;
  */
 public interface UserService {
 
-    void insertUser(UserDto userDto);
-    void updateUser(UserDto userDto);
-    void upsertUser(UserDto userDto);
+    void insert(UserDto userDto);
+    void update(UserDto userDto);
+    void upsert(UserDto userDto);
+
+    void insertList(List<UserDto> userDtoList);
+    void updateList(List<UserDto> userDtoList);
+    void upsertList(List<UserDto> userDtoList);
+
     void updateDepartmentUserRelation(UserDto userDto);
     void updatePwd(PasswordDto passwordDto);
 

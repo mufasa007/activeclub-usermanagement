@@ -5,6 +5,8 @@ import com.activeclub.core.ac_usermanagement.bean.dto.PasswordDto;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
 import com.activeclub.core.ac_usermanagement.bean.vo.UserVo;
 import com.activeclub.core.ac_usermanagement.web.service.UserService;
+import com.activeclub.core.utils.NullUtil;
+import com.activeclub.core.utils.RandomUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,17 +20,32 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     @Override
-    public void insertUser(UserDto userDto) {
+    public void insert(UserDto userDto) {
 
     }
 
     @Override
-    public void updateUser(UserDto userDto) {
+    public void update(UserDto userDto) {
 
     }
 
     @Override
-    public void upsertUser(UserDto userDto) {
+    public void upsert(UserDto userDto) {
+
+    }
+
+    @Override
+    public void insertList(List<UserDto> userDtoList) {
+
+    }
+
+    @Override
+    public void updateList(List<UserDto> userDtoList) {
+
+    }
+
+    @Override
+    public void upsertList(List<UserDto> userDtoList) {
 
     }
 
