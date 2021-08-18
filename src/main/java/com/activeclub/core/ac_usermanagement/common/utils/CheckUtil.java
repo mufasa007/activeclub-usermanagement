@@ -21,6 +21,10 @@ public class CheckUtil {
 //    private EncrytUtil encrytUtil;
 
     public void userInsert(UserDto userDto) throws BaseException {
+
+        /**
+         * 检查密码为空
+         */
         if(NullUtil.strIsNull(userDto.getPassword())){
             throw new BaseException(ErrorCode.PARAM_NULL.code,
                     String.format("Password %s",ErrorCode.PARAM_NULL.msg));

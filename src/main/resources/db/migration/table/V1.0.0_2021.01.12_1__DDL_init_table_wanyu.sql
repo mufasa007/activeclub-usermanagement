@@ -46,7 +46,7 @@ CREATE SEQUENCE IF NOT EXISTS public.department_id_seq
 -- 调整相关
 alter table public.department
     alter column id set default nextval('department_id_seq');
-CREATE UNIQUE INDEX IF NOT EXISTS department_code_uindex ON public."department" USING btree ("code");
+CREATE UNIQUE INDEX IF NOT EXISTS department_code_uindex ON public."department" USING btree ("code","flag");
 CREATE UNIQUE INDEX IF NOT EXISTS department_name_uindex ON public."department" USING btree ("parent_code", "name", "flag");
 
 
@@ -130,7 +130,7 @@ CREATE SEQUENCE IF NOT EXISTS public.user_id_seq
 -- 调整相关
 alter table public.user
     alter column id set default nextval('user_id_seq');
-CREATE UNIQUE INDEX IF NOT EXISTS user_code_uindex ON public."user" USING btree ("code");
+CREATE UNIQUE INDEX IF NOT EXISTS user_code_uindex ON public."user" USING btree ("code","flag");
 CREATE UNIQUE INDEX IF NOT EXISTS phone_number_uindex ON public."user" USING btree ("phone_number", flag);
 CREATE UNIQUE INDEX IF NOT EXISTS identity_number_uindex ON public."user" USING btree ("identity_number", flag);
 
