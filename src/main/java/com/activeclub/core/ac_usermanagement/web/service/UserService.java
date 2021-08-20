@@ -1,6 +1,7 @@
 package com.activeclub.core.ac_usermanagement.web.service;
 
 import com.activeclub.core.ac_usermanagement.bean.model.User;
+import com.activeclub.core.bean.BaseException;
 import com.activeclub.core.bean.Page;
 import com.activeclub.core.ac_usermanagement.bean.dto.PasswordDto;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    void insert(UserDto userDto);
+    void insert(UserDto userDto) throws BaseException;
     void update(UserDto userDto);
     void upsert(UserDto userDto);
 

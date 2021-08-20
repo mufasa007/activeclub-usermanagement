@@ -38,47 +38,229 @@
         b.password,b.phoneNumber,b.identityNumber
     </sql>
 
-<!--    <insert id="insert" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">-->
-<!--        insert into "user"(flag, code, "name",-->
-<!--                           origin_type, info_level, attribute_json, "comment",-->
-<!--                           create_time, update_time, creator, modifier,-->
-<!--                           ext1, ext2, ext3, ext4, ext5,-->
-<!--                           password, phone_number, identity_number)-->
-<!--        values (1, #{code}, #{name},-->
-<!--                #{originType}, #{info_level}, #{attributeJson}, #{comment},-->
-<!--                #{createTime}, #{updateTime}, #{creator}, #{modifier},-->
-<!--                #{ext1}, #{ext2}, #{ext3}, #{ext4}, #{ext5},-->
-<!--                #{password}, #{phoneNumber}, #{identityNumber})-->
-<!--        ON CONFLICT ("code")-->
-<!--            DO UPDATE SET business_code        = #{item.businessCode},-->
-<!--                          "name"               = #{item.name},-->
-<!--                          "full_name"          = #{item.fullName},-->
-<!--                          parent_code          = #{item.parentCode},-->
-<!--                          parent_business_code = #{item.parentBusinessCode},-->
-<!--                          director_code        = #{item.directorCode},-->
-<!--                          update_time          = now(),-->
-<!--                          ext_5                = #{item.ext5},-->
-<!--                          flag                 = (-->
-<!--                              case-->
-<!--                                  when-->
-<!--                                      ge_department.flag = -ge_department.id then 1-->
-<!--                                  when-->
-<!--                                              ge_department.business_code = #{item.businessCode} and-->
-<!--                                              ge_department."name" = #{item.name} and-->
-<!--                                              ge_department."full_name" = #{item.fullName} and-->
-<!--                                              ge_department.parent_code = #{item.parentCode} and-->
-<!--                                              ge_department.parent_business_code = #{item.parentBusinessCode} and-->
-<!--                                              ge_department.director_code = #{item.directorCode} and-->
-<!--                                              ge_department.ext_5 = #{item.ext5} then 0-->
-<!--                                  else 2 end)-->
-<!--        WHERE ge_department.code = #{item.code};-->
-<!--    </insert>-->
+    <sql id="update_sql">
+        update_time = now()
+        <if test="name != null and name !=''">
+            ,"name" = #{item.name}
+        </if>
+        <if test="origin_type != null and origin_type !=''">
+            ,"origin_type" = #{item.originType}
+        </if>
+        <if test="info_level != null and info_level !=''">
+            ,"info_level" = #{item.infoLevel}
+        </if>
+        <if test="attribute_json != null and attribute_json !=''">
+            ,"attribute_json" = #{item.attributeJson}
+        </if>
+        <if test="comment != null and comment !=''">
+            ,"comment" = #{item.comment}
+        </if>
+        <if test="modifier != null and modifier !=''">
+            ,"modifier" = #{item.modifier}
+        </if>
+        <if test="ext1 != null and ext1 !=''">
+            ,"ext1" = #{item.ext1}
+        </if>
+        <if test="ext2 != null and ext2 !=''">
+            ,"ext2" = #{item.ext2}
+        </if>
+        <if test="ext3 != null and ext3 !=''">
+            ,"ext3" = #{item.ext3}
+        </if>
+        <if test="ext4 != null and ext4 !=''">
+            ,"ext4" = #{item.ext4}
+        </if>
+        <if test="ext5 != null and ext5 !=''">
+            ,"ext5" = #{item.ext5}
+        </if>
+        <if test="password != null and password !=''">
+            ,"password" = #{item.password}
+        </if>
+        <if test="phone_number != null and phone_number !=''">
+            ,"phone_number" = #{item.phone_number}
+        </if>
+        <if test="identity_number != null and identity_number !=''">
+            ,"identity_number" = #{item.identityNumber}
+        </if>
+    </sql>
 
-<!--    <insert id="insertList">-->
+    <sql id="select_sql">
+        flag = 0
+        <if test="name != null and name !=''">
+            and "name" = #{item.name}
+        </if>
+        <if test="origin_type != null and origin_type !=''">
+            and "origin_type" = #{item.originType}
+        </if>
+        <if test="info_level != null and info_level !=''">
+            and "info_level" = #{item.infoLevel}
+        </if>
+        <if test="attribute_json != null and attribute_json !=''">
+            and "attribute_json" = #{item.attributeJson}
+        </if>
+        <if test="comment != null and comment !=''">
+            and "comment" = #{item.comment}
+        </if>
+        <if test="modifier != null and modifier !=''">
+            and "modifier" = #{item.modifier}
+        </if>
+        <if test="ext1 != null and ext1 !=''">
+            and "ext1" = #{item.ext1}
+        </if>
+        <if test="ext2 != null and ext2 !=''">
+            and "ext2" = #{item.ext2}
+        </if>
+        <if test="ext3 != null and ext3 !=''">
+            and "ext3" = #{item.ext3}
+        </if>
+        <if test="ext4 != null and ext4 !=''">
+            and "ext4" = #{item.ext4}
+        </if>
+        <if test="ext5 != null and ext5 !=''">
+            and "ext5" = #{item.ext5}
+        </if>
+        <if test="phone_number != null and phone_number !=''">
+            and "phone_number" = #{item.phone_number}
+        </if>
+        <if test="identity_number != null and identity_number !=''">
+            and "identity_number" = #{item.identityNumber}
+        </if>
+    </sql>
 
-<!--    </insert>-->
+    <insert id="insert" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
+        insert into "user"(flag, code, "name",
+                           origin_type, info_level, attribute_json, "comment",
+                           create_time, update_time, creator, modifier,
+                           ext1, ext2, ext3, ext4, ext5,
+                           password, phone_number, identity_number)
+        values (0, #{code}, #{name},
+                #{originType}, #{infoLevel}, #{attributeJson}, #{comment},
+                #{createTime}, #{updateTime}, #{creator}, #{modifier},
+                #{ext1}, #{ext2}, #{ext3}, #{ext4}, #{ext5},
+                #{password}, #{phoneNumber}, #{identityNumber})
+    </insert>
 
-<!--    <select id="selectById" resultType="com.activeclub.usermanagement.bean.entity.User">-->
+    <delete id="delete" parameterType="string">
+        update "user"
+        set flag = -id
+        where code = #{code}
+    </delete>
+
+    <update id="update" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
+        update "user"
+        set
+        <include refid="update_sql"/>
+        WHERE code = #{item.code}
+        and flag = 0;
+    </update>
+
+    <insert id="upsert" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
+        insert into "user"(flag, code, "name",
+                           origin_type, info_level, attribute_json, "comment",
+                           create_time, update_time, creator, modifier,
+                           ext1, ext2, ext3, ext4, ext5,
+                           password, phone_number, identity_number)
+        values (0, #{code}, #{name},
+                #{originType}, #{info_level}, #{attributeJson}, #{comment},
+                now(), now(), #{creator}, #{modifier},
+                #{ext1}, #{ext2}, #{ext3}, #{ext4}, #{ext5},
+                #{password}, #{phoneNumber}, #{identityNumber})
+        ON CONFLICT ("code","flag")
+            DO UPDATE SET "name"          = #{item.name},
+                          "origin_type"   = #{item.originType},
+                          info_level      = #{item.infoLevel},
+                          attribute_json  = #{item.attributeJson},
+                          "comment"       = #{item.comment},
+                          "modifier"      = #{item.modifier},
+                          update_time     = now(),
+                          ext1            = #{item.ext1},
+                          ext2            = #{item.ext2},
+                          ext3            = #{item.ext3},
+                          ext4            = #{item.ext4},
+                          ext5            = #{item.ext5},
+                          password        = #{item.password},
+                          phone_number    = #{item.phoneNumber},
+                          identity_number = #{item.identityNumber}
+        WHERE code = #{item.code}
+          and flag = 0;
+    </insert>
+
+
+    <insert id="insertList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
+        <foreach collection="t" item="item" separator=";">
+            insert into "user"(flag, code, "name",
+            origin_type, info_level, attribute_json, "comment",
+            create_time, update_time, creator, modifier,
+            ext1, ext2, ext3, ext4, ext5,
+            password, phone_number, identity_number)
+            values (0, #{item.code}, #{item.name},
+            #{item.originType}, #{item.info_level}, #{item.attributeJson}, #{item.comment},
+            #{item.createTime}, #{item.updateTime}, #{item.creator}, #{item.modifier},
+            #{item.ext1}, #{item.ext2}, #{item.ext3}, #{item.ext4}, #{item.ext5},
+            #{item.password}, #{item.phoneNumber}, #{item.identityNumber})
+        </foreach>
+    </insert>
+
+    <delete id="deleteList" parameterType="string">
+        update "user"
+        set flag = -id
+        where code = #{code}
+    </delete>
+
+    <update id="updateList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
+        update "user"
+        set
+        <include refid="update_sql"/>
+        WHERE code = #{item.code}
+        and flag = 0;
+    </update>
+
+    <insert id="upsertList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
+        insert into "user"(flag, code, "name",
+                           origin_type, info_level, attribute_json, "comment",
+                           create_time, update_time, creator, modifier,
+                           ext1, ext2, ext3, ext4, ext5,
+                           password, phone_number, identity_number)
+        values (0, #{code}, #{name},
+                #{originType}, #{info_level}, #{attributeJson}, #{comment},
+                now(), now(), #{creator}, #{modifier},
+                #{ext1}, #{ext2}, #{ext3}, #{ext4}, #{ext5},
+                #{password}, #{phoneNumber}, #{identityNumber})
+        ON CONFLICT ("code","flag")
+            DO UPDATE SET "name"          = #{item.name},
+                          "origin_type"   = #{item.originType},
+                          info_level      = #{item.infoLevel},
+                          attribute_json  = #{item.attributeJson},
+                          "comment"       = #{item.comment},
+                          "modifier"      = #{item.modifier},
+                          update_time     = now(),
+                          ext1            = #{item.ext1},
+                          ext2            = #{item.ext2},
+                          ext3            = #{item.ext3},
+                          ext4            = #{item.ext4},
+                          ext5            = #{item.ext5},
+                          password        = #{item.password},
+                          phone_number    = #{item.phoneNumber},
+                          identity_number = #{item.identityNumber}
+        WHERE code = #{item.code}
+          and flag = 0;
+    </insert>
+
+    <select id="findCountByPage">
+        select count(1)
+        from "user"
+        where
+        <include refid="select_sql"/>
+    </select>
+
+    <select id="findByPage">
+        select count(1)
+        from "user"
+        where
+        <include refid="select_sql"/>
+    </select>
+
+    <!--    <select id="selectById" resultType="com.activeclub.usermanagement.bean.entity.User">-->
 
 <!--    </select>-->
 

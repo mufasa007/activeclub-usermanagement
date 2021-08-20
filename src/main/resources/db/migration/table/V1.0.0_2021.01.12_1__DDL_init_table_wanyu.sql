@@ -46,7 +46,7 @@ CREATE SEQUENCE IF NOT EXISTS public.department_id_seq
 -- 调整相关
 alter table public.department
     alter column id set default nextval('department_id_seq');
-CREATE UNIQUE INDEX IF NOT EXISTS department_code_uindex ON public."department" USING btree ("code","flag");
+CREATE UNIQUE INDEX IF NOT EXISTS department_code_uindex ON public."department" USING btree ("code", "flag");
 CREATE UNIQUE INDEX IF NOT EXISTS department_name_uindex ON public."department" USING btree ("parent_code", "name", "flag");
 
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS public."user"
     "password"      varchar NOT NULL,               -- 用户密码
     phone_number    varchar NOT NULL,               -- 电话号码
     identity_number varchar NOT NULL,               -- 身份证号
-    gender          varchar NOT NULL,               -- 性别
+    gender          varchar,                        -- 性别:0女,1男
 
     origin_type     int2    NOT NULL default 0,     -- 数据来源
     info_level      int2    NOT NULL default 50,    -- 信息级别
@@ -130,7 +130,7 @@ CREATE SEQUENCE IF NOT EXISTS public.user_id_seq
 -- 调整相关
 alter table public.user
     alter column id set default nextval('user_id_seq');
-CREATE UNIQUE INDEX IF NOT EXISTS user_code_uindex ON public."user" USING btree ("code","flag");
+CREATE UNIQUE INDEX IF NOT EXISTS user_code_uindex ON public."user" USING btree ("code", "flag");
 CREATE UNIQUE INDEX IF NOT EXISTS phone_number_uindex ON public."user" USING btree ("phone_number", flag);
 CREATE UNIQUE INDEX IF NOT EXISTS identity_number_uindex ON public."user" USING btree ("identity_number", flag);
 
@@ -165,7 +165,7 @@ COMMENT ON COLUMN public."user".ext5 IS '扩展字段5';
 COMMENT ON COLUMN public."user"."password" IS '用户密码';
 COMMENT ON COLUMN public."user".phone_number IS '电话号码';
 COMMENT ON COLUMN public."user".identity_number IS '身份证号';
-COMMENT ON COLUMN public."user".gender IS '性别';
+COMMENT ON COLUMN public."user".gender IS '性别:0女,1男';
 
 
 -- *********** department_user_relation ***********
