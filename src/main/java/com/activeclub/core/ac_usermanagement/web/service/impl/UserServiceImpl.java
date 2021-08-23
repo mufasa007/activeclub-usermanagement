@@ -35,28 +35,28 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public void insert(UserDto userDto) throws BaseException{
+    public void insert(UserDto userDto) throws BaseException {
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
-        try {
+//        try {
             userDao.insert(user);
-        }catch (DuplicateKeyException duplicateKeyException){
-            if(duplicateKeyException.getMessage().contains("user_code_uindex")){
-                logger.error(String.format(
-                        "errorCode:%s,msg:%s,exception:%s",
-                        DB_UINDEX_ERROR.code,"数据重复",
-                        "duplicate key value violates user_code_uindex"));
-                throw new BaseException(DB_UINDEX_ERROR.code,"");
-            }else if(duplicateKeyException.getMessage().contains("user_code_uindex")){
-                logger.error(String.format(
-                        "errorCode:%s,msg:%s,exception:%s",
-                        DB_UINDEX_ERROR.code,"数据重复",
-                        "duplicate key value violates user_code_uindex"));
-                throw new BaseException(DB_UINDEX_ERROR.code,"");
-            }
-        }catch (Exception e){
-            throw new BaseException(DB_UINDEX_ERROR.code,"");
-        }
+//        }catch (DuplicateKeyException duplicateKeyException){
+//            if(duplicateKeyException.getMessage().contains("user_code_uindex")){
+//                logger.error(String.format(
+//                        "errorCode:%s,msg:%s,exception:%s",
+//                        DB_UINDEX_ERROR.code,"数据重复",
+//                        "duplicate key value violates user_code_uindex"));
+//                throw new BaseException(DB_UINDEX_ERROR.code,"");
+//            }else if(duplicateKeyException.getMessage().contains("user_code_uindex")){
+//                logger.error(String.format(
+//                        "errorCode:%s,msg:%s,exception:%s",
+//                        DB_UINDEX_ERROR.code,"数据重复",
+//                        "duplicate key value violates user_code_uindex"));
+//                throw new BaseException(DB_UINDEX_ERROR.code,"");
+//            }
+//        }catch (Exception e){
+//            throw new BaseException(DB_UINDEX_ERROR.code,"");
+//        }
 
 
     }
@@ -136,5 +136,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserVo> getDetailsByCondition(UserDto userDto) {
         return null;
+    }
+
+    @Override
+    public List<UserVo> listAll() {
+        return userDao.listAll();
+    }
+
+    @Override
+    public void delete(String accountName){
+        userDao.delete(accountName);
     }
 }

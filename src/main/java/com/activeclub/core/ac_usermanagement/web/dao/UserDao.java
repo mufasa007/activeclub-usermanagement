@@ -1,6 +1,7 @@
 package com.activeclub.core.ac_usermanagement.web.dao;
 
 import com.activeclub.core.ac_usermanagement.bean.model.User;
+import com.activeclub.core.ac_usermanagement.bean.vo.UserVo;
 import com.activeclub.core.web.dao.BaseDao;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,5 @@ import java.util.List;
 public interface UserDao extends BaseDao<User> {
 
 
+    List<UserVo> listAll();
 }

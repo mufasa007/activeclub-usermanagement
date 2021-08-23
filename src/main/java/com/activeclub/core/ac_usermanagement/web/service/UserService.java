@@ -35,4 +35,8 @@ public interface UserService {
     Page getPageByCondition(UserDto userDto);
 
     List<UserVo> getDetailsByCondition(UserDto userDto);
+
+    List<UserVo> listAll();
+
+    void delete(String accountName);
 }

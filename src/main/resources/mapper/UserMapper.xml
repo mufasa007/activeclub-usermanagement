@@ -30,12 +30,12 @@
 
     </resultMap>
 
-    <sql id="column_sql">
+    <sql id="column_sql_noPassword">
         b.id,b.flag,b.code,b."name",
         b.origin_type,b.info_level,b.attribute_json,b."comment",
         b.create_time,b.update_time,b.creator,b.modifier,
         b.ext1,b.ext2,b.ext3,b.ext4,b.ext5,
-        b.password,b.phoneNumber,b.identityNumber
+        b.phone_number,b.identity_number
     </sql>
 
     <sql id="update_sql">
@@ -258,6 +258,13 @@
         from "user"
         where
         <include refid="select_sql"/>
+    </select>
+
+    <select id="listAll" resultType="com.activeclub.core.ac_usermanagement.bean.vo.UserVo">
+        select
+        <include refid="column_sql_noPassword"/>
+        from "user" b
+        where flag = 0;
     </select>
 
     <!--    <select id="selectById" resultType="com.activeclub.usermanagement.bean.entity.User">-->
