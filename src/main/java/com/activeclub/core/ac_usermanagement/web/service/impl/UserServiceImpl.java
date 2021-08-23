@@ -52,9 +52,9 @@ public class UserServiceImpl implements UserService {
                         "errorCode:%s,msg:%s,exception:%s",
                         DB_UINDEX_ERROR.code,"数据重复",
                         "duplicate key value violates user_code_uindex"));
+                throw new BaseException(DB_UINDEX_ERROR.code,"");
             }
-
-
+        }catch (Exception e){
             throw new BaseException(DB_UINDEX_ERROR.code,"");
         }
 

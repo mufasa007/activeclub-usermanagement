@@ -3,6 +3,7 @@ package com.activeclub.core.ac_usermanagement.web.controller;
 
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
 import com.activeclub.core.ac_usermanagement.web.service.UserService;
+import com.activeclub.core.bean.BaseException;
 import com.activeclub.core.bean.BaseResponse;
 import com.activeclub.core.utils.RandomUtil;
 import com.activeclub.core.web.controller.BaseController;
@@ -31,7 +32,7 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "1.1,添加用户")//已完成
     @PostMapping(value = "insert")
-    public BaseResponse insertUser(@RequestBody UserDto userDto) {
+    public BaseResponse insertUser(@RequestBody UserDto userDto) throws BaseException {
         userService.insert(userDto);
         return success();
     }
