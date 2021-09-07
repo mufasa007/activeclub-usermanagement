@@ -1,11 +1,10 @@
 package com.activeclub.core.ac_usermanagement.bean.dto;
 
-import com.activeclub.core.ac_usermanagement.bean.model.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author 59456
@@ -16,13 +15,12 @@ import java.util.Date;
 public class UserDto implements Serializable {
     private static final long serialVersionUID = 8051403571365757931L;
 
-    @JsonIgnore
+    private List<DepartmentUserRelation> departmentUserRelationList;
+
     private Long id;
 
-    @JsonIgnore
     private Long flag;
 
-    @NotBlank(message = "user code can't be null ! ")
     private String code;
 
     private String password;
@@ -35,10 +33,8 @@ public class UserDto implements Serializable {
     private String attributeJson;
     private String comment;
 
-    @JsonIgnore
     private Date createTime;
 
-    @JsonIgnore
     private Date updateTime;
 
     private String creator;
@@ -48,6 +44,42 @@ public class UserDto implements Serializable {
     private String ext3;
     private String ext4;
     private String ext5;
+
+    private Integer pageNum;
+    private Integer pageSize;
+    private Integer offset;
+
+    public Integer getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    public List<DepartmentUserRelation> getDepartmentUserRelationList() {
+        return departmentUserRelationList;
+    }
+
+    public void setDepartmentUserRelationList(List<DepartmentUserRelation> departmentUserRelationList) {
+        this.departmentUserRelationList = departmentUserRelationList;
+    }
 
     public Long getId() {
         return id;

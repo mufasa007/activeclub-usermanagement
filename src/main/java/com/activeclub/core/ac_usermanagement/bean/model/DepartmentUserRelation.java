@@ -15,10 +15,19 @@ public class DepartmentUserRelation implements Serializable {
     private Long flag;
     private String departmentCode;
     private String userCode;
+    private String type;
     private Date creatTime;
     private Date updateTime;
     private String creator;
     private String modifier;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Long getId() {
         return id;

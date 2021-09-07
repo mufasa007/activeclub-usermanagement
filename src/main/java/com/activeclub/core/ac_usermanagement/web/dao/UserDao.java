@@ -1,5 +1,6 @@
 package com.activeclub.core.ac_usermanagement.web.dao;
 
+import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
 import com.activeclub.core.ac_usermanagement.bean.model.User;
 import com.activeclub.core.ac_usermanagement.bean.vo.UserVo;
 import com.activeclub.core.web.dao.BaseDao;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @Repository
 @Mapper
-public interface UserDao extends BaseDao<User> {
+public interface UserDao extends BaseDao<UserDto> {
 
 
     List<UserVo> listAll();

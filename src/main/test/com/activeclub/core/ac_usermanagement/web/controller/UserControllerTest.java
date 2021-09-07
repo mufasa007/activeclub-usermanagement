@@ -1,14 +1,21 @@
 package com.activeclub.core.ac_usermanagement.web.controller;
 
 
+import com.activeclub.core.ac_usermanagement.Application;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
 import com.activeclub.core.ac_usermanagement.web.service.UserService;
 import com.activeclub.core.bean.BaseResponse;
 import com.activeclub.core.web.controller.BaseController;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -19,10 +26,10 @@ import java.util.List;
  * @Descrip 用户管理接口 crud
  * @Version 1.0
  */
-@RestController
-@RequestMapping(value = "/web/user/")
-@Api(tags = {"1.用户信息管理"})
-public class UserController extends BaseController {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class)
+@WebAppConfiguration
+public class UserControllerTest extends BaseController {
 
     @Autowired
     private UserService userService;

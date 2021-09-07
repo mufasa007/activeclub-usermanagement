@@ -1,14 +1,11 @@
 package com.activeclub.core.ac_usermanagement.web.service.impl;
 
-import com.activeclub.core.ac_usermanagement.bean.dto.PasswordDto;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
 import com.activeclub.core.ac_usermanagement.bean.model.User;
-import com.activeclub.core.ac_usermanagement.bean.vo.UserVo;
 import com.activeclub.core.ac_usermanagement.web.dao.UserDao;
 import com.activeclub.core.ac_usermanagement.web.service.UserService;
 import com.activeclub.core.bean.BaseException;
 import com.activeclub.core.bean.Page;
-import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -35,44 +32,28 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public void insert(UserDto userDto) throws BaseException {
+    public void insert(UserDto userDto) {
         User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-//        try {
-            userDao.insert(user);
-//        }catch (DuplicateKeyException duplicateKeyException){
-//            if(duplicateKeyException.getMessage().contains("user_code_uindex")){
-//                logger.error(String.format(
-//                        "errorCode:%s,msg:%s,exception:%s",
-//                        DB_UINDEX_ERROR.code,"数据重复",
-//                        "duplicate key value violates user_code_uindex"));
-//                throw new BaseException(DB_UINDEX_ERROR.code,"");
-//            }else if(duplicateKeyException.getMessage().contains("user_code_uindex")){
-//                logger.error(String.format(
-//                        "errorCode:%s,msg:%s,exception:%s",
-//                        DB_UINDEX_ERROR.code,"数据重复",
-//                        "duplicate key value violates user_code_uindex"));
-//                throw new BaseException(DB_UINDEX_ERROR.code,"");
-//            }
-//        }catch (Exception e){
-//            throw new BaseException(DB_UINDEX_ERROR.code,"");
-//        }
-
-
-    }
-
-    @Override
-    public void update(UserDto userDto) {
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-        userDao.update(user);
-    }
-
-    @Override
-    public void upsert(UserDto userDto) {
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-        userDao.upsert(user);
+//        BeanUtils.copyProperties(userDto, user);
+        try {
+            userDao.insert(userDto);
+        }catch (DuplicateKeyException duplicateKeyException){
+            if(duplicateKeyException.getMessage().contains("user_code_uindex")){
+                logger.error(String.format(
+                        "errorCode:%s,msg:%s,exception:%s",
+                        DB_UINDEX_ERROR.code,"数据重复",
+                        "duplicate key value violates user_code_uindex"));
+                throw new BaseException(DB_UINDEX_ERROR.code,"");
+            }else if(duplicateKeyException.getMessage().contains("user_code_uindex")){
+                logger.error(String.format(
+                        "errorCode:%s,msg:%s,exception:%s",
+                        DB_UINDEX_ERROR.code,"数据重复",
+                        "duplicate key value violates user_code_uindex"));
+                throw new BaseException(DB_UINDEX_ERROR.code,"");
+            }
+        }catch (Exception e){
+            throw new BaseException(DB_UINDEX_ERROR.code,"");
+        }
     }
 
     @Override
@@ -83,7 +64,24 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(entity, user);
             userList.add(user);
         });
-        userDao.insertList(userList);
+        userDao.insertList(userDtoList);
+    }
+
+    @Override
+    public void delete(String accountName) {
+        userDao.delete(accountName);
+    }
+
+    @Override
+    public void deleteList(List<String> accountNameList) {
+        userDao.deleteList(accountNameList);
+    }
+
+    @Override
+    public void update(UserDto userDto) {
+        User user = new User();
+        BeanUtils.copyProperties(userDto, user);
+        userDao.update(userDto);
     }
 
     @Override
@@ -94,7 +92,14 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(entity, user);
             userList.add(user);
         });
-        userDao.updateList(userList);
+        userDao.updateList(userDtoList);
+    }
+
+    @Override
+    public void upsert(UserDto userDto) {
+        User user = new User();
+        BeanUtils.copyProperties(userDto, user);
+        userDao.upsert(userDto);
     }
 
     @Override
@@ -105,46 +110,51 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(entity, user);
             userList.add(user);
         });
-        userDao.upsertList(userList);
+        userDao.upsertList(userDtoList);
+    }
+
+
+    @Override
+    public UserDto detail(String accountName) {
+        return userDao.detail(accountName);
     }
 
     @Override
-    public void updateDepartmentUserRelation(UserDto userDto) {
-
+    public List<?> detailList(List<String> accountNameList) {
+        return userDao.detailList(accountNameList);
     }
 
     @Override
-    public void updatePwd(PasswordDto passwordDto) {
+    public Page findByPage(UserDto userDto) {
+        Integer pageNum = userDto.getPageNum();
+        Integer pageSize = userDto.getPageSize();
+        if(pageNum == null || pageNum<1){
+            pageNum = 1;
+            userDto.setPageNum(pageNum);
+        }
+        if(pageSize == null || pageSize<1){
+            pageSize = 10;
+            userDto.setPageSize(pageSize);
+        }
 
+        Page page = new Page();
+        Integer count = userDao.findCountByPage(userDto);
+        if(count== 0 || count <1){
+            page.setTotalNum(0);
+            page.setTotalSize(0);
+            return page;
+        }
+
+        page.setTotalSize(count);
+        Integer totalNum = count / pageSize + (count % pageSize > 0 ? 1 : 0);
+        page.setTotalNum(totalNum);
+        Integer offset = pageSize * (pageNum-1);
+        userDto.setOffset(offset);
+
+        List<?> userList = userDao.findByPage(userDto);
+        page.setData(userList);
+        return page;
     }
 
-    @Override
-    public void deleteUserByAccountNameList(List<String> accountNameList) {
 
-    }
-
-    @Override
-    public UserVo getDetailsByAccountNameList(List<String> accountNameList) {
-        return null;
-    }
-
-    @Override
-    public Page getPageByCondition(UserDto userDto) {
-        return null;
-    }
-
-    @Override
-    public List<UserVo> getDetailsByCondition(UserDto userDto) {
-        return null;
-    }
-
-    @Override
-    public List<UserVo> listAll() {
-        return userDao.listAll();
-    }
-
-    @Override
-    public void delete(String accountName){
-        userDao.delete(accountName);
-    }
 }
