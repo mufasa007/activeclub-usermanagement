@@ -6,8 +6,8 @@ import com.activeclub.core.ac_usermanagement.web.dao.UserDao;
 import com.activeclub.core.ac_usermanagement.web.service.UserService;
 import com.activeclub.core.bean.BaseException;
 import com.activeclub.core.bean.Page;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -26,15 +26,13 @@ import static com.activeclub.core.constants.ErrorCode.DB_UINDEX_ERROR;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserDao userDao;
 
     @Override
     public void insert(UserDto userDto) {
-        User user = new User();
-//        BeanUtils.copyProperties(userDto, user);
         try {
             userDao.insert(userDto);
         }catch (DuplicateKeyException duplicateKeyException){

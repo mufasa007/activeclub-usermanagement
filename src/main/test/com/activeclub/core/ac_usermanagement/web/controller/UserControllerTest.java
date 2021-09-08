@@ -3,10 +3,11 @@ package com.activeclub.core.ac_usermanagement.web.controller;
 
 import com.activeclub.core.ac_usermanagement.Application;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
-import com.activeclub.core.ac_usermanagement.web.service.UserService;
 import com.activeclub.core.bean.BaseResponse;
 import com.activeclub.core.web.controller.BaseController;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,83 +33,109 @@ import java.util.List;
 public class UserControllerTest extends BaseController {
 
     @Autowired
-    private UserService userService;
+    private UserController userController;
 
-    @ApiOperation(value = "1.1.1,添加用户")
-    @PostMapping(value = "insert")
-    public BaseResponse insertUser(@RequestBody UserDto userDto) {
-        userService.insert(userDto);
-        return success();
+    @Test
+    public void insertUserTest() {
+        String jsonObject = "{\n" +
+                "    \"attributeJson\":\"string\",\n" +
+                "    \"code\":\"0001\",\n" +
+                "    \"comment\":\"备注\",\n" +
+                "    \"creator\":\"万雨管理员test\",\n" +
+                "    \"departmentUserRelationList\":[\n" +
+                "        {\n" +
+                "            \"departmentCode\":\"0001\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"departmentCode\":\"0002\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"ext1\":\"和骄傲时刻的和接口\",\n" +
+                "    \"ext2\":\"打发第三方\",\n" +
+                "    \"ext3\":\"干发鬼地方\",\n" +
+                "    \"ext4\":\"回复稿\",\n" +
+                "    \"ext5\":\"还有记忆教育厅\",\n" +
+                "    \"identityNumber\":\"42062119960729743X\",\n" +
+                "    \"infoLevel\":100,\n" +
+                "    \"modifier\":\"\",\n" +
+                "    \"name\":\"万雨\",\n" +
+                "    \"offset\":0,\n" +
+                "    \"originType\":0,\n" +
+                "    \"pageNum\":0,\n" +
+                "    \"pageSize\":0,\n" +
+                "    \"password\":\"\",\n" +
+                "    \"phoneNumber\":\"15827323800\"\n" +
+                "}";
+        UserDto userDto = JSONObject.parseObject(jsonObject, UserDto.class);
+        userController.insertUser(userDto);
     }
 
-    @ApiOperation(value = "1.1.2,批量添加用户")
-    @PostMapping(value = "insertList")
-    public BaseResponse insertUser(@RequestBody List<UserDto> userDtoList) {
-        userService.insertList(userDtoList);
-        return success();
-    }
+//    @Test
+//    public BaseResponse insertUser() {
+//        userService.insertList(userDtoList);
+//        return success();
+//    }
 
-    @ApiOperation(value = "1.2.1,删除用户")
-    @GetMapping(value = "delete")
-    public BaseResponse delete(@RequestParam String accountName) {
-        userService.delete(accountName);
-        return success();
-    }
+//    @Test
+//    public BaseResponse delete(@RequestParam String accountName) {
+//        userService.delete(accountName);
+//        return success();
+//    }
 
-    @ApiOperation(value = "1.2.2,批量删除用户")
-    @PostMapping(value = "deleteList")
-    public BaseResponse deleteList(@RequestBody List<String> accountNameList) {
-        userService.deleteList(accountNameList);
-        return success();
-    }
+//    @ApiOperation(value = "1.2.2,批量删除用户")
+//    @PostMapping(value = "deleteList")
+//    public BaseResponse deleteList(@RequestBody List<String> accountNameList) {
+//        userService.deleteList(accountNameList);
+//        return success();
+//    }
 
-    @ApiOperation(value = "1.3.1,更新用户")
-    @PostMapping(value = "update")
-    public BaseResponse delete(@RequestBody UserDto userDto) {
-        userService.update(userDto);
-        return success();
-    }
-
-    @ApiOperation(value = "1.3.2,批量更新用户")
-    @PostMapping(value = "updateList")
-    public BaseResponse updateList(@RequestBody List<UserDto> userDtoList) {
-        userService.updateList(userDtoList);
-        return success();
-    }
-
-    @ApiOperation(value = "1.4.1,新增、更新用户")
-    @PostMapping(value = "upsert")
-    public BaseResponse upsert(@RequestBody UserDto userDto) {
-        userService.update(userDto);
-        return success();
-    }
-
-    @ApiOperation(value = "1.4.2,批量新增、更新用户")
-    @PostMapping(value = "upsertList")
-    public BaseResponse upsertList(@RequestBody List<UserDto> userDtoList) {
-        userService.upsertList(userDtoList);
-        return success();
-    }
-
-    // 查询接口
-
-    @ApiOperation(value = "2.1.1,查询数据")
-    @GetMapping(value = "detail")
-    public BaseResponse detail(@RequestParam String accountName) {
-        return success("success",userService.detail(accountName));
-    }
-
-    @ApiOperation(value = "2.1.2,批量查询数据")
-    @PostMapping(value = "detailList")
-    public BaseResponse detailList(@RequestBody List<String> accountNameList) {
-        return success("success",userService.detailList(accountNameList));
-    }
-
-    @ApiOperation(value = "2.2.1,分页查询")
-    @PostMapping(value = "findByPage")
-    public BaseResponse findByPage(@RequestBody UserDto userDto) {
-        return success("success",userService.findByPage(userDto));
-    }
+//    @ApiOperation(value = "1.3.1,更新用户")
+//    @PostMapping(value = "update")
+//    public BaseResponse delete(@RequestBody UserDto userDto) {
+//        userService.update(userDto);
+//        return success();
+//    }
+//
+//    @ApiOperation(value = "1.3.2,批量更新用户")
+//    @PostMapping(value = "updateList")
+//    public BaseResponse updateList(@RequestBody List<UserDto> userDtoList) {
+//        userService.updateList(userDtoList);
+//        return success();
+//    }
+//
+//    @ApiOperation(value = "1.4.1,新增、更新用户")
+//    @PostMapping(value = "upsert")
+//    public BaseResponse upsert(@RequestBody UserDto userDto) {
+//        userService.update(userDto);
+//        return success();
+//    }
+//
+//    @ApiOperation(value = "1.4.2,批量新增、更新用户")
+//    @PostMapping(value = "upsertList")
+//    public BaseResponse upsertList(@RequestBody List<UserDto> userDtoList) {
+//        userService.upsertList(userDtoList);
+//        return success();
+//    }
+//
+//    // 查询接口
+//
+//    @ApiOperation(value = "2.1.1,查询数据")
+//    @GetMapping(value = "detail")
+//    public BaseResponse detail(@RequestParam String accountName) {
+//        return success("success",userService.detail(accountName));
+//    }
+//
+//    @ApiOperation(value = "2.1.2,批量查询数据")
+//    @PostMapping(value = "detailList")
+//    public BaseResponse detailList(@RequestBody List<String> accountNameList) {
+//        return success("success",userService.detailList(accountNameList));
+//    }
+//
+//    @ApiOperation(value = "2.2.1,分页查询")
+//    @PostMapping(value = "findByPage")
+//    public BaseResponse findByPage(@RequestBody UserDto userDto) {
+//        return success("success",userService.findByPage(userDto));
+//    }
 
 
 

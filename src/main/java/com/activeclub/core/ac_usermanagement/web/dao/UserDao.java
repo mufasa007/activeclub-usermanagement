@@ -5,6 +5,7 @@ import com.activeclub.core.ac_usermanagement.bean.model.User;
 import com.activeclub.core.ac_usermanagement.bean.vo.UserVo;
 import com.activeclub.core.web.dao.BaseDao;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface UserDao extends BaseDao<UserDto> {
 
 
     List<UserVo> listAll();
+
+    Boolean checkUser(@Param("code") String code);
 }

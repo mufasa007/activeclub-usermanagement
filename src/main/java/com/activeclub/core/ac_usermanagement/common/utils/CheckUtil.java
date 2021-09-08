@@ -1,10 +1,15 @@
 package com.activeclub.core.ac_usermanagement.common.utils;
 
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
+import com.activeclub.core.ac_usermanagement.web.dao.UserDao;
 import com.activeclub.core.bean.BaseException;
 import com.activeclub.core.constants.ErrorCode;
+import com.activeclub.core.constants.NormalConstants;
 import com.activeclub.core.utils.EncrytUtil;
 import com.activeclub.core.utils.NullUtil;
+import com.activeclub.core.utils.RandomUtil;
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,27 +21,72 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CheckUtil {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-//    @Autowired
-//    private EncrytUtil encrytUtil;
+    @Autowired
+    private UserDao userDao;
+
+    public void userUpdate(UserDto userDto) {
+
+        // 非空校验
+        if(userDto == null){
+            throw new BaseException(ErrorCode.PARAM_NULL.code, "input user data is null! ");
+        }
+
+        // code为空则自动生成
+        if(NullUtil.strIsNull(userDto.getCode())){
+            throw new BaseException(ErrorCode.PARAM_NULL.code, "input user's code is null! ");
+        }
+
+        Boolean flag =  userDao.checkUser(userDto.getCode());
+        if(flag){
+            throw new BaseException(ErrorCode.PARAM_NULL.code, "user's code is null in db ");
+        }
+
+    }
 
     public void userInsert(UserDto userDto) throws BaseException {
+        // 非空校验
+        if(userDto == null){
+            throw new BaseException(ErrorCode.PARAM_NULL.code, "input user data is null! ");
+        }
 
-        /**
-         * 检查密码为空
-         */
+        // code为空则自动生成
+        if(NullUtil.strIsNull(userDto.getCode())){
+            userDto.setCode(RandomUtil.getRandomCode());
+        }
+
+        // 账户名称
+        if(NullUtil.strIsNull(userDto.getName())){
+            throw new BaseException(ErrorCode.PARAM_NULL.code, "input user's name is null! ");
+        }
+
+        // 密码
         if(NullUtil.strIsNull(userDto.getPassword())){
-            throw new BaseException(ErrorCode.PARAM_NULL.code,
-                    String.format("Password %s",ErrorCode.PARAM_NULL.msg));
+            userDto.setPassword(PasswordUtil.generatePassword());
         }
 
-        EncrytUtil encrytUtil= new EncrytUtil();
-        try{
-            String ciper = encrytUtil.Decode(userDto.getPassword(),"","");
-        }catch (Exception e){
-            throw new BaseException(ErrorCode.PARAM_DECODE.code,
-                    String.format("Password %s",ErrorCode.PARAM_DECODE.msg));
+        // 电话号码
+        if(NullUtil.strIsNull(userDto.getPhoneNumber())){
+            userDto.setPhoneNumber("1582" + RandomUtil.getRandomCode());
         }
+
+        // 身份证号
+        if(NullUtil.strIsNull(userDto.getPhoneNumber())){
+            userDto.setIdentityNumber("420621" + RandomUtil.getRandomCode());
+        }
+
+//        // 数据来源(数据库有默认值)
+//        if(null == userDto.getOriginType()){
+//            userDto.setOriginType(NormalConstants.ORIGIN_TYPE_OURSELF);
+//        }
+//
+//        // 信息级别(数据库有默认值)
+//        if(null == userDto.getInfoLevel()){
+//            userDto.setInfoLevel(new Short("50"));
+//        }
+
+
     }
 
 }

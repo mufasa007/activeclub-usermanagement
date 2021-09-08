@@ -266,6 +266,12 @@
         from "user" b
         where flag = 0;
     </select>
+    <select id="checkUser" resultType="java.lang.Boolean">
+        select case when count(1)>0 then true
+        else false end
+        from "user"
+        where flag = 0 and code = #{code}
+    </select>
 
     <!--    <select id="selectById" resultType="com.activeclub.usermanagement.bean.entity.User">-->
 
