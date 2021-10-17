@@ -9,6 +9,7 @@ import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import static com.activeclub.core.constants.ErrorCode.DB_UINDEX_ERROR;
  * @Descrip
  * @Version 1.0
  */
+@Service
 public class DepartmentServiceImpl implements DepartmentService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
