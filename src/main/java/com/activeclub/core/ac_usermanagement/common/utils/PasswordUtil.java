@@ -28,10 +28,9 @@ public class PasswordUtil {
                 .mapToObj(c -> (char) c)
                 .collect(Collectors.toList());
         Collections.shuffle(pwdChars);
-        String password = pwdChars.stream()
+        return pwdChars.stream()
                 .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
                 .toString();
-        return password;
     }
 
 }

@@ -1,17 +1,22 @@
 package com.activeclub.core.ac_usermanagement.web.service.impl;
 
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
+import com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation;
 import com.activeclub.core.ac_usermanagement.bean.model.User;
+import com.activeclub.core.ac_usermanagement.web.dao.DepartmentDao;
+import com.activeclub.core.ac_usermanagement.web.dao.DepartmentUserRelationDao;
 import com.activeclub.core.ac_usermanagement.web.dao.UserDao;
 import com.activeclub.core.ac_usermanagement.web.service.UserService;
 import com.activeclub.core.bean.BaseException;
 import com.activeclub.core.bean.Page;
+import com.activeclub.core.utils.SessionUtil;
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +36,26 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private DepartmentDao departmentDao;
+
+    @Autowired
+    private DepartmentUserRelationDao departmentUserRelationDao;
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insert(UserDto userDto) {
+        String preUserCode = "admin";
+//        String preUserCode = SessionUtil.getUserCode();
         try {
+            String userCode = userDto.getCode();
             userDao.insert(userDto);
+            List<DepartmentUserRelation> departmentUserRelationList = userDto.getDepartmentUserRelationList();
+            departmentUserRelationList.forEach(e->{
+                e.setUserCode(userCode);
+                e.setCreator(preUserCode);
+            });
+            departmentUserRelationDao.upsertList(departmentUserRelationList);
         }catch (DuplicateKeyException duplicateKeyException){
             if(duplicateKeyException.getMessage().contains("user_code_uindex")){
                 logger.error(String.format(
@@ -68,11 +89,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String accountName) {
         userDao.delete(accountName);
+        departmentUserRelationDao.deleteByUserCode(accountName);
     }
 
     @Override
     public void deleteList(List<String> accountNameList) {
         userDao.deleteList(accountNameList);
+        departmentUserRelationDao.deleteByUserCodeList(accountNameList);
     }
 
     @Override

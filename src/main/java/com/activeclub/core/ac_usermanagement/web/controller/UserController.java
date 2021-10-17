@@ -29,14 +29,14 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "1.1.1,添加用户")
     @PostMapping(value = "insert")
-    public BaseResponse insertUser(@RequestBody UserDto userDto) {
+    public BaseResponse insert(@RequestBody UserDto userDto) {
         userService.insert(userDto);
         return success();
     }
 
     @ApiOperation(value = "1.1.2,批量添加用户")
     @PostMapping(value = "insertList")
-    public BaseResponse insertUser(@RequestBody List<UserDto> userDtoList) {
+    public BaseResponse insertList(@RequestBody List<UserDto> userDtoList) {
         userService.insertList(userDtoList);
         return success();
     }
@@ -57,7 +57,7 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "1.3.1,更新用户")
     @PostMapping(value = "update")
-    public BaseResponse delete(@RequestBody UserDto userDto) {
+    public BaseResponse update(@RequestBody UserDto userDto) {
         userService.update(userDto);
         return success();
     }
@@ -103,58 +103,5 @@ public class UserController extends BaseController {
         return success("success",userService.findByPage(userDto));
     }
 
-
-
-
-    //	@ApiOperation(value = "1.2.,批量添加用户(可用状态)")//已完成
-//	@PostMapping(value = "insertUserList")
-//	public CommonResponse insertUserList(@RequestBody List<User> userList) throws Exception {
-//		userList.forEach((user) -> user.setUserCode(RandomUtil.createUUID()));
-//		userService.save(userList);
-//		return success("批量添加用户成功! ");
-//	}
-//
-//	@ApiOperation(value = "2.1,通过userId查找用户(可用状态)")//已完成
-//	@GetMapping(value = "getUserById")
-//	public CommonResponse getById(Long userId) {
-//		return success(userService.getById(userId));
-//	}
-//
-//	@ApiOperation(value = "2.2,通过userId批量查找用户(可用状态)")//已完成
-//	@PostMapping(value = "getUserByIdList")
-//	public CommonResponse getByIdList(List<Long> userIdList) {
-//		return success(userService.getByIdList(userIdList));
-//	}
-//
-//	@ApiOperation(value = "2.3,通过userCode查找用户(可用状态)")//已完成
-//	@GetMapping(value = "getUserByCode")
-//	public CommonResponse getUserByCode(String userCode) {
-//		return success(userService.getByCode(userCode));
-//	}
-//
-//	@ApiOperation(value = "2.4,通过userCodeList批量查找用户(可用状态)")//已完成
-//	@PostMapping(value = "getUserByCodeList")
-//	public CommonResponse getUserByCodeList(List<String> userCodeList) {
-//		return success(userService.getByCodeList(userCodeList));
-//	}
-//
-//	@ApiOperation(value = "2.5,通过user属性信息批量查找用户(可用状态)")//已完成
-//	@PostMapping(value = "getUserByEntityInfo")
-//	public CommonResponse getUserByEntityInfo(User user) {
-//		return success(userService.getByEntityInfo(user));
-//	}
-//
-//    @ApiOperation(value = "2.6,获取所有用户(可用状态)")//已完成
-//    @GetMapping(value = "getAllUser")
-//    public BaseResponse getAllUser() {
-//        return success("success", userService.listAll());
-//    }
-//
-//	@ApiOperation(value = "2.7,分页查询用户信息(可用状态)")//已完成
-//	@PostMapping(value = "getUserByPage")
-//	public BaseResponse getUserByPage(UserDto userDto) {
-//		Map<String, Object> objectMap = new HashMap<>();
-//		return success(userService.page(objectMap, userDto.getPageNo(), userDto.getPageSize()));
-//	}
 
 }

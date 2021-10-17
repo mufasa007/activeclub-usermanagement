@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.activeclub.core.ac_usermanagement.web.dao.UserDao">
+<mapper namespace="com.activeclub.core.ac_usermanagement.web.dao.DepartmentDao">
 
-    <resultMap id="BaseResultMap" type="com.activeclub.core.ac_usermanagement.bean.dto.UserDto">
+    <resultMap id="BaseResultMap" type="com.activeclub.core.ac_usermanagement.bean.dto.DepartmentDto">
 
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="flag" jdbcType="BIGINT" property="flag"/>
@@ -24,9 +24,11 @@
         <result column="ext5" jdbcType="VARCHAR" property="ext5"/>
 
 
-        <result column="password" jdbcType="VARCHAR" property="password"/>
-        <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber"/>
-        <result column="identityNumber" jdbcType="VARCHAR" property="identityNumber"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="parent_code" jdbcType="VARCHAR" property="parentCode"/>
+        <result column="location" jdbcType="VARCHAR" property="location"/>
+        <result column="hierarchy" jdbcType="TINYINT" property="hierarchy"/>
+        <result column="sort" jdbcType="TINYINT" property="sort"/>
 
     </resultMap>
 
@@ -35,7 +37,7 @@
         b.origin_type,b.info_level,b.attribute_json,b."comment",
         b.create_time,b.update_time,b.creator,b.modifier,
         b.ext1,b.ext2,b.ext3,b.ext4,b.ext5,
-        b.phone_number,b.identity_number
+        b.full_name,b.parent_code,b.location,b.hierarchy,b.sort
     </sql>
 
     <sql id="update_sql">
@@ -73,16 +75,27 @@
         <if test="ext5 != null and ext5 !=''">
             ,"ext5" = #{item.ext5}
         </if>
-        <if test="password != null and password !=''">
-            ,"password" = #{item.password}
+        <include refid="update_sql_department"/>
+    </sql>
+
+    <sql id="update_sql_department">
+        <if test="fullName != null and fullName !=''">
+            ,"full_name" = #{item.fullName}
         </if>
-        <if test="phone_number != null and phone_number !=''">
-            ,"phone_number" = #{item.phone_number}
+        <if test="parentCode != null and parentCode !=''">
+            ,"parent_code" = #{item.parentCode}
         </if>
-        <if test="identity_number != null and identity_number !=''">
-            ,"identity_number" = #{item.identityNumber}
+        <if test="location != null and location !=''">
+            ,"location" = #{item.location}
+        </if>
+        <if test="hierarchy != null and hierarchy !=''">
+            ,"hierarchy" = #{item.hierarchy}
+        </if>
+        <if test="sort != null and sort !=''">
+            ,"sort" = #{item.sort}
         </if>
     </sql>
+
 
     <sql id="select_sql">
         flag = 0
@@ -127,39 +140,41 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
-        insert into "user"(flag, code, "name",
+    <insert id="insert" parameterType="com.activeclub.core.ac_usermanagement.bean.dto.DepartmentDto">
+        insert into "department"(flag, code, "name",
                            origin_type, info_level, attribute_json, "comment",
                            create_time, update_time, creator, modifier,
                            ext1, ext2, ext3, ext4, ext5,
-                           password, phone_number, identity_number)
+                           full_name, parent_code, location,hierarchy,sort)
         values (0, #{code}, #{name},
                 #{originType}, #{infoLevel}, #{attributeJson}, #{comment},
                 #{createTime}, #{updateTime}, #{creator}, #{modifier},
                 #{ext1}, #{ext2}, #{ext3}, #{ext4}, #{ext5},
-                #{password}, #{phoneNumber}, #{identityNumber})
+                #{fullName}, #{parentCode}, #{location}, #{hierarchy}, #{sort})
     </insert>
 
     <delete id="delete" parameterType="string">
-        update "user"
-        set flag = -id
+        update "department"
+        set flag = -id,update_time=now()
         where code = #{code}
     </delete>
 
-    <update id="update" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
-        update "user"
+    <update id="update" parameterType="com.activeclub.core.ac_usermanagement.bean.dto.DepartmentDto">
+        update "department"
         set
         <include refid="update_sql"/>
         WHERE code = #{item.code}
         and flag = 0;
     </update>
 
-    <insert id="upsert" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">
-        insert into "user"(flag, code, "name",
-                           origin_type, info_level, attribute_json, "comment",
-                           create_time, update_time, creator, modifier,
-                           ext1, ext2, ext3, ext4, ext5,
-                           password, phone_number, identity_number)
+    <!-- 以上为基础功能 -->
+
+    <insert id="upsert" parameterType="com.activeclub.core.ac_usermanagement.bean.dto.DepartmentDto">
+        insert into "department"(flag, code, "name",
+                                 origin_type, info_level, attribute_json, "comment",
+                                 create_time, update_time, creator, modifier,
+                                 ext1, ext2, ext3, ext4, ext5,
+                                 full_name, parent_code, location,hierarchy,sort)
         values (0, #{code}, #{name},
                 #{originType}, #{info_level}, #{attributeJson}, #{comment},
                 now(), now(), #{creator}, #{modifier},
@@ -178,9 +193,11 @@
                           ext3            = #{item.ext3},
                           ext4            = #{item.ext4},
                           ext5            = #{item.ext5},
-                          password        = #{item.password},
-                          phone_number    = #{item.phoneNumber},
-                          identity_number = #{item.identityNumber}
+                          full_name        = #{item.fullName},
+                          parent_code    = #{item.parentCode},
+                          location = #{item.location},
+                          hierarchy = #{item.hierarchy},
+                          sort = #{item.sort}
         WHERE code = #{item.code}
           and flag = 0;
     </insert>
@@ -266,7 +283,8 @@
         from "user" b
         where flag = 0;
     </select>
-    <select id="checkUser" resultType="java.lang.Boolean">
+
+    <select id="checkDepartment" resultType="java.lang.Boolean">
         select case when count(1)>0 then true
         else false end
         from "user"

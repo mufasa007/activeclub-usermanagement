@@ -3,6 +3,7 @@ package com.activeclub.core.ac_usermanagement.web.dao;
 import com.activeclub.core.ac_usermanagement.bean.dto.DepartmentDto;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
 import com.activeclub.core.web.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @Author 59456
@@ -12,4 +13,5 @@ import com.activeclub.core.web.dao.BaseDao;
  */
 public interface DepartmentDao extends BaseDao<DepartmentDto> {
 
+    Boolean checkDepartment(@Param("code") String code);
 }

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS public."department"
     code           varchar NOT NULL,               -- 唯一code
     name           varchar NOT NULL,               -- 显示名
 
-    fullName       varchar,                        -- 部门全称
+    full_name      varchar,                        -- 部门全称
     parent_code    varchar NOT NULL default 0,     -- 父级部门code:0顶级部门
     location       varchar,                        -- 部门位置
     hierarchy      int2    NOT NULL,               -- 部门层级
@@ -76,6 +76,8 @@ COMMENT ON COLUMN public."department".ext3 IS '扩展字段3';
 COMMENT ON COLUMN public."department".ext4 IS '扩展字段4';
 COMMENT ON COLUMN public."department".ext5 IS '扩展字段5';
 
+COMMENT ON COLUMN public."department".parent_code IS '父级部门code';
+COMMENT ON COLUMN public."department".full_name IS '部门全称';
 COMMENT ON COLUMN public."department".location IS '部门位置';
 COMMENT ON COLUMN public."department".hierarchy IS '部门层级';
 COMMENT ON COLUMN public."department"."sort" IS '同层级显示顺序';

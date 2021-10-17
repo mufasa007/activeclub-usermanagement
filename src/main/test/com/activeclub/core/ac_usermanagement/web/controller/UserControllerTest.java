@@ -3,22 +3,14 @@ package com.activeclub.core.ac_usermanagement.web.controller;
 
 import com.activeclub.core.ac_usermanagement.Application;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
-import com.activeclub.core.bean.BaseResponse;
 import com.activeclub.core.web.controller.BaseController;
 import com.alibaba.fastjson.JSONObject;
-import io.swagger.annotations.ApiOperation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 /**
  * @Author 59456
@@ -67,7 +59,7 @@ public class UserControllerTest extends BaseController {
                 "    \"phoneNumber\":\"15827323800\"\n" +
                 "}";
         UserDto userDto = JSONObject.parseObject(jsonObject, UserDto.class);
-        userController.insertUser(userDto);
+        userController.insert(userDto);
     }
 
 //    @Test

@@ -15,17 +15,17 @@ public class DepartmentUserRelation implements Serializable {
     private Long flag;
     private String departmentCode;
     private String userCode;
-    private String type;
-    private Date creatTime;
+    private Short type;
+    private Date createTime;
     private Date updateTime;
     private String creator;
     private String modifier;
 
-    public String getType() {
+    public Short getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Short type) {
         this.type = type;
     }
 
@@ -61,12 +61,12 @@ public class DepartmentUserRelation implements Serializable {
         this.userCode = userCode;
     }
 
-    public Date getCreatTime() {
-        return creatTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdateTime() {

@@ -1,6 +1,8 @@
 package com.activeclub.core.ac_usermanagement.common.utils;
 
+import com.activeclub.core.ac_usermanagement.bean.dto.DepartmentDto;
 import com.activeclub.core.ac_usermanagement.bean.dto.UserDto;
+import com.activeclub.core.ac_usermanagement.web.dao.DepartmentDao;
 import com.activeclub.core.ac_usermanagement.web.dao.UserDao;
 import com.activeclub.core.bean.BaseException;
 import com.activeclub.core.constants.ErrorCode;
@@ -25,6 +27,31 @@ public class CheckUtil {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private DepartmentDao departmentDao;
+
+    public void departmentUpdate(DepartmentDto departmentDto) {
+        // 非空校验
+        if(departmentDto == null){
+            throw new BaseException(ErrorCode.PARAM_NULL.code, "input department data is null! ");
+        }
+
+        // code为空则自动生成
+        if(NullUtil.strIsNull(departmentDto.getCode())){
+            throw new BaseException(ErrorCode.PARAM_NULL.code, "input department's code is null! ");
+        }
+
+        Boolean flag =  departmentDao.checkDepartment(departmentDto.getCode());
+        if(flag){
+            throw new BaseException(ErrorCode.PARAM_NULL.code, "user's code is null in db ");
+        }
+    }
+
+    public void departmentInsert(DepartmentDto departmentDto) {
+
+    }
+
 
     public void userUpdate(UserDto userDto) {
 

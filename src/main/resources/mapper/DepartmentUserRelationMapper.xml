@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.activeclub.core.ac_usermanagement.web.dao.DepartmentUserRelationDao">
+
+    <resultMap id="BaseResultMap" type="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="flag" jdbcType="BIGINT" property="flag"/>
+
+        <result column="department_code" jdbcType="VARCHAR" property="departmentCode"/>
+        <result column="user_code" jdbcType="VARCHAR" property="userCode"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
+
+    </resultMap>
+
+    <sql id="column_sql">
+        b.id,b.flag,
+        b.department_code,b.user_code,b.type,
+        b.create_time,b.update_time,b.creator,b.modifier
+    </sql>
+
+    <sql id="update_sql">
+        update_time = now()
+        <if test="department_code != null and department_code !=''">
+            ,"department_code" = #{item.department_code}
+        </if>
+        <if test="user_code != null and user_code !=''">
+            ,"user_code" = #{item.user_code}
+        </if>
+        <if test="type != null and type !=''">
+            ,"type" = #{item.type}
+        </if>
+        <if test="modifier != null and modifier !=''">
+            ,"modifier" = #{item.modifier}
+        </if>
+    </sql>
+
+    <update id="upsert" parameterType="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+        insert into "department_user_relation"( department_code, user_code,type,
+                    create_time, creator)
+        values ( #{departmentCode}, #{userCode},#{type},
+                now(), #{creator})
+        ON CONFLICT ("department_code","user_code")
+            DO UPDATE SET flag            = 0,
+                          "type"          = #{type},
+                          "modifier"      = #{creator},
+                          update_time     = now()
+        WHERE "department_code" = #{departmentCode}
+          and user_code = #{userCode};
+    </update>
+
+    <update id="upsertList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+        <foreach collection="t" item="item">
+            insert into "department_user_relation"( department_code, user_code,type,
+            create_time, creator)
+            values ( #{item.departmentCode}, #{item.userCode},#{item.type},
+            now(), #{item.creator})
+            ON CONFLICT ("department_code","user_code")
+            DO UPDATE SET flag            = 0,
+            "type"          = #{item.type},
+            "modifier"      = #{item.creator},
+            update_time     = now()
+            WHERE "department_code" = #{item.departmentCode}
+            and user_code = #{item.userCode};
+        </foreach>
+    </update>
+
+    <delete id="deleteByConidtion" parameterType="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+        <if test="flag != null">
+            update "department_user_relation"
+            set flag = -id,update_time=now(),modifier=#{modifier}
+            where
+                flag = 0
+                <if test="departmentCode != null and departmentCode !=''">
+                    and "department_code" = #{departmentCode}
+                </if>
+                <if test="userCode != null and userCode !=''">
+                    and "user_code" = #{userCode}
+                </if>
+                <if test="type != null and type !=''">
+                    and "type" = #{type}
+                </if>
+        </if>
+    </delete>
+
+    <delete id="deleteByUserCode" parameterType="java.lang.String">
+        update "department_user_relation"
+        set flag = -id,update_time=now()
+        where flag = 0
+          and "user_code" = #{userCode}
+    </delete>
+
+    <delete id="deleteByDepartmentCode" parameterType="java.lang.String">
+        update "department_user_relation"
+        set flag = -id,update_time=now()
+        where flag = 0
+        <if test="departmentCode != null and departmentCode !=''">
+            and "department_code" = #{departmentCode}
+        </if>
+    </delete>
+
+    <delete id="deleteByUserCodeList">
+        <foreach collection="userCodeList" item="item">
+            update "department_user_relation"
+            set flag = -id,update_time=now()
+            where flag = 0
+            and "user_code" = #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteByDepartmentCodeList">
+        <foreach collection="departmentCodeList" item="item">
+            update "department_user_relation"
+            set flag = -id,update_time=now()
+            where flag = 0
+            and "department_code" = #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectByCondition" resultType="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+        select
+        <include refid="column_sql"/>
+        from department_user_relation
+        where
+            flag = 0
+            <if test="departmentCode != null and departmentCode !=''">
+                and "department_code" = #{departmentCode}
+            </if>
+            <if test="userCode != null and userCode !=''">
+                and "user_code" = #{userCode}
+            </if>
+            <if test="type != null and type !=''">
+                and "type" = #{type}
+            </if>
+    </select>
+
+    <!-- 以上为基础功能 -->
+
+<!--    <insert id="upsert" parameterType="com.activeclub.core.ac_usermanagement.bean.dto.DepartmentDto">-->
+<!--        insert into "department"(flag, code, "name",-->
+<!--                                 origin_type, info_level, attribute_json, "comment",-->
+<!--                                 create_time, update_time, creator, modifier,-->
+<!--                                 ext1, ext2, ext3, ext4, ext5,-->
+<!--                                 full_name, parent_code, location,hierarchy,sort)-->
+<!--        values (0, #{code}, #{name},-->
+<!--                #{originType}, #{info_level}, #{attributeJson}, #{comment},-->
+<!--                now(), now(), #{creator}, #{modifier},-->
+<!--                #{ext1}, #{ext2}, #{ext3}, #{ext4}, #{ext5},-->
+<!--                #{password}, #{phoneNumber}, #{identityNumber})-->
+<!--        ON CONFLICT ("code","flag")-->
+<!--            DO UPDATE SET "name"          = #{item.name},-->
+<!--                          "origin_type"   = #{item.originType},-->
+<!--                          info_level      = #{item.infoLevel},-->
+<!--                          attribute_json  = #{item.attributeJson},-->
+<!--                          "comment"       = #{item.comment},-->
+<!--                          "modifier"      = #{item.modifier},-->
+<!--                          update_time     = now(),-->
+<!--                          ext1            = #{item.ext1},-->
+<!--                          ext2            = #{item.ext2},-->
+<!--                          ext3            = #{item.ext3},-->
+<!--                          ext4            = #{item.ext4},-->
+<!--                          ext5            = #{item.ext5},-->
+<!--                          full_name        = #{item.fullName},-->
+<!--                          parent_code    = #{item.parentCode},-->
+<!--                          location = #{item.location},-->
+<!--                          hierarchy = #{item.hierarchy},-->
+<!--                          sort = #{item.sort}-->
+<!--        WHERE code = #{item.code}-->
+<!--          and flag = 0;-->
+<!--    </insert>-->
+
+
+<!--    <insert id="insertList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">-->
+<!--        <foreach collection="t" item="item" separator=";">-->
+<!--            insert into "user"(flag, code, "name",-->
+<!--            origin_type, info_level, attribute_json, "comment",-->
+<!--            create_time, update_time, creator, modifier,-->
+<!--            ext1, ext2, ext3, ext4, ext5,-->
+<!--            password, phone_number, identity_number)-->
+<!--            values (0, #{item.code}, #{item.name},-->
+<!--            #{item.originType}, #{item.info_level}, #{item.attributeJson}, #{item.comment},-->
+<!--            #{item.createTime}, #{item.updateTime}, #{item.creator}, #{item.modifier},-->
+<!--            #{item.ext1}, #{item.ext2}, #{item.ext3}, #{item.ext4}, #{item.ext5},-->
+<!--            #{item.password}, #{item.phoneNumber}, #{item.identityNumber})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+
+<!--    <delete id="deleteList" parameterType="string">-->
+<!--        update "user"-->
+<!--        set flag = -id-->
+<!--        where code = #{code}-->
+<!--    </delete>-->
+
+<!--    <update id="updateList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">-->
+<!--        update "user"-->
+<!--        set-->
+<!--        <include refid="update_sql"/>-->
+<!--        WHERE code = #{item.code}-->
+<!--        and flag = 0;-->
+<!--    </update>-->
+
+<!--    <insert id="upsertList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">-->
+<!--        insert into "user"(flag, code, "name",-->
+<!--                           origin_type, info_level, attribute_json, "comment",-->
+<!--                           create_time, update_time, creator, modifier,-->
+<!--                           ext1, ext2, ext3, ext4, ext5,-->
+<!--                           password, phone_number, identity_number)-->
+<!--        values (0, #{code}, #{name},-->
+<!--                #{originType}, #{info_level}, #{attributeJson}, #{comment},-->
+<!--                now(), now(), #{creator}, #{modifier},-->
+<!--                #{ext1}, #{ext2}, #{ext3}, #{ext4}, #{ext5},-->
+<!--                #{password}, #{phoneNumber}, #{identityNumber})-->
+<!--        ON CONFLICT ("code","flag")-->
+<!--            DO UPDATE SET "name"          = #{item.name},-->
+<!--                          "origin_type"   = #{item.originType},-->
+<!--                          info_level      = #{item.infoLevel},-->
+<!--                          attribute_json  = #{item.attributeJson},-->
+<!--                          "comment"       = #{item.comment},-->
+<!--                          "modifier"      = #{item.modifier},-->
+<!--                          update_time     = now(),-->
+<!--                          ext1            = #{item.ext1},-->
+<!--                          ext2            = #{item.ext2},-->
+<!--                          ext3            = #{item.ext3},-->
+<!--                          ext4            = #{item.ext4},-->
+<!--                          ext5            = #{item.ext5},-->
+<!--                          password        = #{item.password},-->
+<!--                          phone_number    = #{item.phoneNumber},-->
+<!--                          identity_number = #{item.identityNumber}-->
+<!--        WHERE code = #{item.code}-->
+<!--          and flag = 0;-->
+<!--    </insert>-->
+
+<!--    <select id="findCountByPage">-->
+<!--        select count(1)-->
+<!--        from "user"-->
+<!--        where-->
+<!--        <include refid="select_sql"/>-->
+<!--    </select>-->
+
+<!--    <select id="findByPage">-->
+<!--        select count(1)-->
+<!--        from "user"-->
+<!--        where-->
+<!--        <include refid="select_sql"/>-->
+<!--    </select>-->
+
+<!--    <select id="listAll" resultType="com.activeclub.core.ac_usermanagement.bean.vo.UserVo">-->
+<!--        select-->
+<!--        <include refid="column_sql_noPassword"/>-->
+<!--        from "user" b-->
+<!--        where flag = 0;-->
+<!--    </select>-->
+
+<!--    <select id="checkDepartment" resultType="java.lang.Boolean">-->
+<!--        select case when count(1)>0 then true-->
+<!--        else false end-->
+<!--        from "user"-->
+<!--        where flag = 0 and code = #{code}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;    <select id="selectById" resultType="com.activeclub.usermanagement.bean.entity.User">&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </select>&ndash;&gt;-->
+
+
+</mapper>

@@ -31,12 +31,12 @@ public class Department extends BaseModel implements Serializable {
     /**
      * 部门层级
      */
-    private String hierarchy;
+    private Short hierarchy;
 
     /**
      * 同层级显示顺序
      */
-    private String sort;
+    private Short sort;
 
     public String getLocation() {
         return location;
@@ -46,19 +46,19 @@ public class Department extends BaseModel implements Serializable {
         this.location = location;
     }
 
-    public String getHierarchy() {
+    public Short getHierarchy() {
         return hierarchy;
     }
 
-    public void setHierarchy(String hierarchy) {
+    public void setHierarchy(Short hierarchy) {
         this.hierarchy = hierarchy;
     }
 
-    public String getSort() {
+    public Short getSort() {
         return sort;
     }
 
-    public void setSort(String sort) {
+    public void setSort(Short sort) {
         this.sort = sort;
     }
 
