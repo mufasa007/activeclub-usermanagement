@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.activeclub.core.ac_usermanagement.web.dao.DepartmentUserRelationDao">
+<mapper namespace="com.activeclub.core.usermanagement.web.dao.DepartmentUserRelationDao">
 
-    <resultMap id="BaseResultMap" type="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+    <resultMap id="BaseResultMap" type="com.activeclub.core.usermanagement.bean.model.DepartmentUserRelation">
 
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="flag" jdbcType="BIGINT" property="flag"/>
@@ -40,7 +40,7 @@
         </if>
     </sql>
 
-    <update id="upsert" parameterType="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+    <update id="upsert" parameterType="com.activeclub.core.usermanagement.bean.model.DepartmentUserRelation">
         insert into "department_user_relation"( department_code, user_code,type,
                     create_time, creator)
         values ( #{departmentCode}, #{userCode},#{type},
@@ -54,7 +54,7 @@
           and user_code = #{userCode};
     </update>
 
-    <update id="upsertList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+    <update id="upsertList" parameterType="com.activeclub.core.usermanagement.bean.model.DepartmentUserRelation">
         <foreach collection="t" item="item">
             insert into "department_user_relation"( department_code, user_code,type,
             create_time, creator)
@@ -70,7 +70,7 @@
         </foreach>
     </update>
 
-    <delete id="deleteByConidtion" parameterType="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+    <delete id="deleteByConidtion" parameterType="com.activeclub.core.usermanagement.bean.model.DepartmentUserRelation">
         <if test="flag != null">
             update "department_user_relation"
             set flag = -id,update_time=now(),modifier=#{modifier}
@@ -121,7 +121,7 @@
         </foreach>
     </delete>
 
-    <select id="selectByCondition" resultType="com.activeclub.core.ac_usermanagement.bean.model.DepartmentUserRelation">
+    <select id="selectByCondition" resultType="com.activeclub.core.usermanagement.bean.model.DepartmentUserRelation">
         select
         <include refid="column_sql"/>
         from department_user_relation
@@ -140,7 +140,7 @@
 
     <!-- 以上为基础功能 -->
 
-<!--    <insert id="upsert" parameterType="com.activeclub.core.ac_usermanagement.bean.dto.DepartmentDto">-->
+<!--    <insert id="upsert" parameterType="com.activeclub.core.usermanagement.bean.dto.DepartmentDto">-->
 <!--        insert into "department"(flag, code, "name",-->
 <!--                                 origin_type, info_level, attribute_json, "comment",-->
 <!--                                 create_time, update_time, creator, modifier,-->
@@ -174,7 +174,7 @@
 <!--    </insert>-->
 
 
-<!--    <insert id="insertList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">-->
+<!--    <insert id="insertList" parameterType="com.activeclub.core.usermanagement.bean.model.User">-->
 <!--        <foreach collection="t" item="item" separator=";">-->
 <!--            insert into "user"(flag, code, "name",-->
 <!--            origin_type, info_level, attribute_json, "comment",-->
@@ -195,7 +195,7 @@
 <!--        where code = #{code}-->
 <!--    </delete>-->
 
-<!--    <update id="updateList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">-->
+<!--    <update id="updateList" parameterType="com.activeclub.core.usermanagement.bean.model.User">-->
 <!--        update "user"-->
 <!--        set-->
 <!--        <include refid="update_sql"/>-->
@@ -203,7 +203,7 @@
 <!--        and flag = 0;-->
 <!--    </update>-->
 
-<!--    <insert id="upsertList" parameterType="com.activeclub.core.ac_usermanagement.bean.model.User">-->
+<!--    <insert id="upsertList" parameterType="com.activeclub.core.usermanagement.bean.model.User">-->
 <!--        insert into "user"(flag, code, "name",-->
 <!--                           origin_type, info_level, attribute_json, "comment",-->
 <!--                           create_time, update_time, creator, modifier,-->
@@ -248,7 +248,7 @@
 <!--        <include refid="select_sql"/>-->
 <!--    </select>-->
 
-<!--    <select id="listAll" resultType="com.activeclub.core.ac_usermanagement.bean.vo.UserVo">-->
+<!--    <select id="listAll" resultType="com.activeclub.core.usermanagement.bean.vo.UserVo">-->
 <!--        select-->
 <!--        <include refid="column_sql_noPassword"/>-->
 <!--        from "user" b-->
